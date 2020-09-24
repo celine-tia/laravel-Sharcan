@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -15,7 +16,6 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        // var_dump($products->toArray());
         return view('products', compact('products'));
 
     }
@@ -27,7 +27,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $category = DB::table('categories')->pluck('name', 'id');
+
+        return view('product/create_product', compact('category'));
     }
 
     /**
@@ -38,7 +40,22 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $request->validate([
+            'name' => 'min:6|required',
+            'image' => 'required',
+            'price' => 'required|integer',
+            'description' => 'required',
+            'stock' => 'required|integer'
+        ]);
+
+        $product = new Product();
+        $input = $request->input();
+        $product->fill($input);
+
+        $product->save();
+
+        return redirect()->route('product.index');
     }
 
     /**
@@ -49,7 +66,9 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Product::find($id);
+        // dd($product);
+        return view('product/product_id', compact('product'));
     }
 
     /**
@@ -60,7 +79,10 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = DB::table('categories')->pluck('name', 'id');
+
+        return view('product/update_product', compact('category'));
+
     }
 
     /**
@@ -72,7 +94,13 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $product = Product::findOrFail($id);
+        $input = $request->input();
+        $product->fill($input)->save();
+
+        return redirect()->route('product.show', $id);
+
     }
 
     /**
@@ -83,6 +111,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $product->delete();
+        return redirect()->route('product.index');
     }
 }
