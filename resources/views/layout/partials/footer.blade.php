@@ -1,7 +1,7 @@
 
 
 <footer>
-    <div class="container bg-danger">
+    <div class="container-fluid bg-dark fixed-bottom">
         <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p>
     </div>
 </footer>
