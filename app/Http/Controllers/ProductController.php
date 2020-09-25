@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -43,17 +44,19 @@ class ProductController extends Controller
 
         $request->validate([
             'name' => 'min:6|required',
-            'image' => 'required',
-            'price' => 'required|integer',
-            'description' => 'required',
-            'stock' => 'required|integer'
+            'image' => 'required|mimes:jpeg,png,gif',
+            'price' => 'required|integer|min:0',
+            'description' => 'min:1|required',
+            'stock' => 'required|integer|min:0'
         ]);
 
         $product = new Product();
         $input = $request->input();
-        $product->fill($input);
+        $path = $request->file('image')->store('public/picture/product');
+        $input['image'] = str_replace('public/picture/product/', '', $path);
 
-        $product->save();
+        $product->fill($input)
+        ->save();
 
         return redirect()->route('product.index');
     }
@@ -95,6 +98,13 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'min:6|required',
+            'image' => 'required',
+            'price' => 'required|integer|min:0',
+            'description' => 'required',
+            'stock' => 'required|integer|min:0'
+        ]);
 
         $product = Product::findOrFail($id);
         $input = $request->input();
