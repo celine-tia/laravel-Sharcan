@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 
-class ProductController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +14,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
-        return view('products', compact('products'));
-
+        $categories = Category::all();
+        return view('category/categories', compact('categories'));
     }
 
     /**
@@ -28,9 +25,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $category = DB::table('categories')->pluck('name', 'id');
-
-        return view('product/create_product', compact('category'));
+        return view('category/create_category');
     }
 
     /**
@@ -41,24 +36,19 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
-            'name' => 'min:6|required',
+            'name' => 'min:1|required',
             'image' => 'required|mimes:jpeg,png,gif',
-            'price' => 'required|integer|min:0',
-            'description' => 'min:1|required',
-            'stock' => 'required|integer|min:0'
         ]);
 
-        $product = new Product();
+        $category = new Category();
         $input = $request->input();
-        $path = $request->file('image')->store('public/picture/product');
-        $input['image'] = str_replace('public/picture/product/', '', $path);
-
-        $product->fill($input)
+        $path = $request->file('image')->store('public/picture/category');
+        $input['image'] = str_replace('public/picture/category/', '', $path);
+        $category->fill($input)
         ->save();
 
-        return redirect()->route('product.index');
+        return redirect()->route('category.index');
     }
 
     /**
@@ -69,9 +59,9 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::find($id);
-        // dd($product);
-        return view('product/product_id', compact('product'));
+        $category = Category::findOrFail($id);
+
+        return view('category/category_id', compact('category'));
     }
 
     /**
@@ -82,11 +72,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $category = DB::table('categories')->pluck('name', 'id');
-        $product = Product::findOrFail($id);
-
-        return view('product/update_product', compact('category', 'product'));
-
+        $category = Category::findOrFail($id);
+        return view('category/category_update', compact('category'));
     }
 
     /**
@@ -100,17 +87,13 @@ class ProductController extends Controller
     {
         $request->validate([
             'name' => 'min:6|required',
-            'image' => 'required',
-            'price' => 'required|integer|min:0',
-            'description' => 'required',
-            'stock' => 'required|integer|min:0'
         ]);
 
-        $product = Product::findOrFail($id);
+        $category = Category::findOrFail($id);
         $input = $request->input();
-        $product->fill($input)->save();
+        $category->fill($input)->save();
 
-        return redirect()->route('product.show', $id);
+        return redirect()->route('category.show', $id);
 
     }
 
@@ -122,8 +105,8 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::findOrFail($id);
-        $product->delete();
-        return redirect()->route('product.index');
+        $category = Category::findOrFail($id);
+        $category->delete();
+        return redirect()->route('category.index');
     }
 }

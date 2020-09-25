@@ -16,7 +16,7 @@
                 </div>
             @endif
 
-            {!! Form::open(array('url' => '/product', 'method' => 'POST')) !!}
+            {!! Form::open(array('url' => '/product', 'method' => 'POST', 'files' => true)) !!}
 
 
             <div class="form-group">
@@ -25,11 +25,7 @@
                 ]) !!}
             </div>
             <div class="form-group">
-                {!! Form::text('image', '', [
-                'class' => 'form-control',
-                'placeholder' => 'Lien de l\'image',
-                'label' => 'test'
-                ]) !!}
+                {!! Form::file('image')!!}
             </div>
             <div class="form-group">
                 {!! Form::textarea('description', 'Description', [
