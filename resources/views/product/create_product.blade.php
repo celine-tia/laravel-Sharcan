@@ -25,11 +25,6 @@
                 ]) !!}
             </div>
             <div class="form-group">
-                {{-- {!! Form::text('image', '', [
-                'class' => 'form-control',
-                'placeholder' => 'Lien de l\'image',
-                'label' => 'test'
-                ]) !!} --}}
                 {!! Form::file('image')!!}
             </div>
             <div class="form-group">

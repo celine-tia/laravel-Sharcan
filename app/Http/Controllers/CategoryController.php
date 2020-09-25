@@ -59,7 +59,9 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        return view('category/category_id', compact('category'));
     }
 
     /**
@@ -70,7 +72,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        return view('category/category_update', compact('category'));
     }
 
     /**
@@ -82,7 +85,16 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'min:6|required',
+        ]);
+
+        $category = Category::findOrFail($id);
+        $input = $request->input();
+        $category->fill($input)->save();
+
+        return redirect()->route('category.show', $id);
+
     }
 
     /**
@@ -93,6 +105,8 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        $category->delete();
+        return redirect()->route('category.index');
     }
 }

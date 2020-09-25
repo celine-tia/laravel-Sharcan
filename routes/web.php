@@ -17,7 +17,7 @@ use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
 Route::resource('product', ProductController::class);
 Route::resource('category', CategoryController::class);

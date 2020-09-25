@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('main')
-<div class="container-fluid w-75 bg-light">
+<div class="container-fluid w-75 bg-light" >
     <div class="row">
         <div class="m-5 w-100">
 
@@ -20,19 +20,15 @@
 
 
             <div class="form-group">
-                {!! Form::text('name', 'Name', [
+                {!! Form::text('name', $product->name, [
                 'class' => 'form-control'
                 ]) !!}
             </div>
             <div class="form-group">
-                {!! Form::text('image', '', [
-                'class' => 'form-control',
-                'placeholder' => 'Lien de l\'image',
-                'label' => 'test'
-                ]) !!}
+                {!! Form::file('image')!!}
             </div>
             <div class="form-group">
-                {!! Form::textarea('description', 'Description', [
+                {!! Form::textarea('description', $product->description, [
                     'class' => 'form-control'
                     ]) !!}
             </div>
@@ -43,12 +39,12 @@
                         ]) !!}
                 </div>
                 <div class="form-group col-md-4">
-                    {!! Form::number('stock', '0', [
+                    {!! Form::number('stock', $product->stock, [
                     'class' => 'form-control'
                     ]) !!}
                 </div>
                 <div class="form-group col-md-4">
-                    {!! Form::number('price', '0', [
+                    {!! Form::number('price', $product->price, [
                     'class' => 'form-control'
                     ]) !!}
                 </div>
