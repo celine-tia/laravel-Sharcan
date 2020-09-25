@@ -1,7 +1,7 @@
 @extends('layout')
 
 @section('main')
-<div class="container-fluid w-75 bg-light">
+<div class="container-fluid w-75 bg-light" style="margin-top: 5%;">
     <div class="row">
         <div class="m-5 w-100">
 

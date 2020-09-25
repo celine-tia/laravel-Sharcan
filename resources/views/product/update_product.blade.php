@@ -16,7 +16,7 @@
                 </div>
             @endif
 
-            {!! Form::open(array('url' => '/product/update', 'method' => 'PUT')) !!}
+            {!! Form::open(array('route' => ['product.update', $product->id], 'method' => 'PUT', )) !!}
 
 
             <div class="form-group">

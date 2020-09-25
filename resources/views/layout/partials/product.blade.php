@@ -8,8 +8,8 @@
             <div class="card-body align-middle">
                 <h5 class="card-title">{{$product->name}}</h5>
                 <p class="card-text">{{$product->description}}</p>
-                <h5 class="card-text">19.00€</h5>
-                <h5 class="card-text">5552 produits disponibles</h5>
+            <h5 class="card-text">{{$product->price}}€</h5>
+                <h5 class="card-text">{{$product->stock}} produits disponibles</h5>
 
                 <a href="{{ route('product.edit', $product->id) }}" class="btn btn-warning">Modifier</a>
                 {!! Form::model($product, array(

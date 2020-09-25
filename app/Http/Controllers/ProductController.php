@@ -80,8 +80,9 @@ class ProductController extends Controller
     public function edit($id)
     {
         $category = DB::table('categories')->pluck('name', 'id');
+        $product = Product::findOrFail($id);
 
-        return view('product/update_product', compact('category'));
+        return view('product/update_product', compact('category', 'product'));
 
     }
 
