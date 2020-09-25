@@ -10,13 +10,15 @@
         <div class="card-body align-middle">
             <h5 class="card-title">{{$category->name}}</h5>
 
-            <a href="{{ route('category.edit', $category->id) }}" class="btn btn-warning">Modifier</a>
-            {!! Form::model($category, array(
-                'route' => ['category.destroy', $category->id],
-                'method' => 'DELETE'
-            )) !!}
-            {!! Form::submit('Supprimer', ['class' => 'btn btn-danger']) !!}
-            {!! Form::close() !!}
+            @if($userRole === 1)
+                <a href="{{ route('category.edit', $category->id) }}" class="btn btn-warning">Modifier</a>
+                {!! Form::model($category, array(
+                    'route' => ['category.destroy', $category->id],
+                    'method' => 'DELETE'
+                    )) !!}
+                {!! Form::submit('Supprimer', ['class' => 'btn btn-danger']) !!}
+                {!! Form::close() !!}
+            @endif
 
         </div>
       </div>

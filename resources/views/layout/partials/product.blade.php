@@ -11,13 +11,15 @@
             <h5 class="card-text">{{$product->price}}€</h5>
                 <h5 class="card-text">{{$product->stock}} produits disponibles</h5>
 
-                <a href="{{ route('product.edit', $product->id) }}" class="btn btn-warning">Modifier</a>
-                {!! Form::model($product, array(
-                    'route' => ['product.destroy', $product->id],
-                    'method' => 'DELETE'
-                )) !!}
-                {!! Form::submit('Supprimer', ['class' => 'btn btn-danger']) !!}
-                {!! Form::close() !!}
+                @if ($userRole === 1)
+                    <a href="{{ route('product.edit', $product->id) }}" class="btn btn-warning">Modifier</a>
+                    {!! Form::model($product, array(
+                        'route' => ['product.destroy', $product->id],
+                        'method' => 'DELETE'
+                    )) !!}
+                    {!! Form::submit('Supprimer', ['class' => 'btn btn-danger']) !!}
+                    {!! Form::close() !!}
+                @endif
 
             </div>
           </div>

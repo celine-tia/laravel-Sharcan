@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -60,8 +61,10 @@ class CategoryController extends Controller
     public function show($id)
     {
         $category = Category::findOrFail($id);
+        $user = Auth::user()->toArray();
+        $userRole = $user['role'];
 
-        return view('category/category_id', compact('category'));
+        return view('category/category_id', compact('category', 'userRole'));
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -70,8 +71,10 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
-        // dd($product);
-        return view('product/product_id', compact('product'));
+        $user = Auth::user()->toArray();
+        $userRole = $user['role'];
+
+        return view('product/product_id', compact('product', 'userRole'));
     }
 
     /**

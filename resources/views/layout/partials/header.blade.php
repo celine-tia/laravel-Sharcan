@@ -18,6 +18,18 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('category.index')}}">Categories</a>
                     </li>
+                    @if (!Auth::check())
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('login')}}">Login</a>
+                    </li>
+                    @else
+                    <li class="nav-item text-center align-center">
+                        <form method="POST" action="{{ route('logout') }}" class="align-middle h-100">
+                            @csrf
+                            <a href="{{ route('logout') }}" class="btn btn-danger btn-sm p-2" onclick="event.preventDefault(); this.closest('form').submit();">Se Deconnecter</a>
+                        </form>
+                    </li>
+                    @endif
                 </ul>
             </div>
         </div>
