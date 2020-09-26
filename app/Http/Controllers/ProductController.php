@@ -79,7 +79,23 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::find($id);
+        // $product = Product::find($id);
+
+        $product = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->select('products.*', 'categories.name as category_name', 'categories.id as category_id')
+            ->where('products.id', $id)
+            ->get()
+        ->first();
+
+
+        $otherProducts = DB::table('products')
+            ->where('category_id', '=', $product->category_id)
+            ->limit(4)
+        ->get();
+
+
+
         if(Auth::check()){
             $user = Auth::user()->toArray();
             $userRole = $user['role'];
@@ -88,7 +104,7 @@ class ProductController extends Controller
             $userRole = 0;
         }
 
-        return view('product/product_id', compact('product', 'userRole'));
+        return view('product/product_id', compact('product', 'userRole', 'otherProducts'));
     }
 
     /**
