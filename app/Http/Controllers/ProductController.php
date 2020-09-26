@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -17,7 +18,16 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        return view('products', compact('products'));
+
+        if(Auth::check()){
+            $user = Auth::user()->toArray();
+            $userRole = $user['role'];
+        }
+        else {
+            $userRole = 0;
+        }
+
+        return view('products', compact('products', 'userRole'));
 
     }
 
@@ -69,9 +79,32 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::find($id);
-        // dd($product);
-        return view('product/product_id', compact('product'));
+        // $product = Product::find($id);
+
+        $product = DB::table('products')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->select('products.*', 'categories.name as category_name', 'categories.id as category_id')
+            ->where('products.id', $id)
+            ->get()
+        ->first();
+
+
+        $otherProducts = DB::table('products')
+            ->where('category_id', '=', $product->category_id)
+            ->limit(4)
+        ->get();
+
+
+
+        if(Auth::check()){
+            $user = Auth::user()->toArray();
+            $userRole = $user['role'];
+        }
+        else {
+            $userRole = 0;
+        }
+
+        return view('product/product_id', compact('product', 'userRole', 'otherProducts'));
     }
 
     /**
@@ -108,6 +141,17 @@ class ProductController extends Controller
 
         $product = Product::findOrFail($id);
         $input = $request->input();
+
+        if($request->file('image')){
+            if(Storage::exists('public/picture/product/'.$product->image)){
+                Storage::delete('public/picture/product/'.$product->image);
+            }
+
+            $path = $request->file('image')->store('public/picture/product');
+            $input['image'] = str_replace('public/picture/product/', '', $path);
+
+        }
+
         $product->fill($input)->save();
 
         return redirect()->route('product.show', $id);

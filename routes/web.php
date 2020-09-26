@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\MainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +16,8 @@ use App\Http\Controllers\CategoryController;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [MainController::class, 'index'])->name('home');
+Route::get('/{name}_{id}', [MainController::class, 'showProduct'])->name('showProduct');
 
 Route::resource('product', ProductController::class);
 Route::resource('category', CategoryController::class);

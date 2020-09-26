@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -15,7 +17,16 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return view('category/categories', compact('categories'));
+
+        if(Auth::check()){
+            $user = Auth::user()->toArray();
+            $userRole = $user['role'];
+        }
+        else {
+            $userRole = 0;
+        }
+
+        return view('category/categories', compact('categories', 'userRole'));
     }
 
     /**
@@ -61,7 +72,15 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        return view('category/category_id', compact('category'));
+        if(Auth::check()){
+            $user = Auth::user()->toArray();
+            $userRole = $user['role'];
+        }
+        else {
+            $userRole = 0;
+        }
+
+        return view('category/category_id', compact('category', 'userRole'));
     }
 
     /**
@@ -86,11 +105,22 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'min:6|required',
+            'name' => 'min:0|required',
         ]);
 
         $category = Category::findOrFail($id);
         $input = $request->input();
+
+        if($request->file('image')){
+            if(Storage::exists('public/picture/category/'.$category->image)){
+                Storage::delete('public/picture/category/'.$category->image);
+            }
+
+            $path = $request->file('image')->store('public/picture/category');
+            $input['image'] = str_replace('public/picture/category/', '', $path);
+
+        }
+
         $category->fill($input)->save();
 
         return redirect()->route('category.show', $id);
