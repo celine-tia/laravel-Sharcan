@@ -18,7 +18,16 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        return view('products', compact('products'));
+
+        if(Auth::check()){
+            $user = Auth::user()->toArray();
+            $userRole = $user['role'];
+        }
+        else {
+            $userRole = 0;
+        }
+
+        return view('products', compact('products', 'userRole'));
 
     }
 
@@ -71,8 +80,13 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
-        $user = Auth::user()->toArray();
-        $userRole = $user['role'];
+        if(Auth::check()){
+            $user = Auth::user()->toArray();
+            $userRole = $user['role'];
+        }
+        else {
+            $userRole = 0;
+        }
 
         return view('product/product_id', compact('product', 'userRole'));
     }
@@ -111,6 +125,17 @@ class ProductController extends Controller
 
         $product = Product::findOrFail($id);
         $input = $request->input();
+
+        if($request->file('image')){
+            if(Storage::exists('public/picture/product/'.$product->image)){
+                Storage::delete('public/picture/product/'.$product->image);
+            }
+
+            $path = $request->file('image')->store('public/picture/product');
+            $input['image'] = str_replace('public/picture/product/', '', $path);
+
+        }
+
         $product->fill($input)->save();
 
         return redirect()->route('product.show', $id);

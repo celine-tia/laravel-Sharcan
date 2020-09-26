@@ -1,21 +1,14 @@
-
-
-<div class="col-lg-4 col-md-6 mt-4">
-    <div class="card h-100">
+<div class="col-lg-4 col-md-6 my-3">
+    <div class="card h-100 text-center">
         @if (!strpos($product->image, 'lorem'))
             <a href="#"><img class="card-img-top" src="/storage/picture/product/{{$product->image}}" alt=""></a>
         @else
             <a href="#"><img class="card-img-top" src="{{$product->image}}" alt=""></a>
         @endif
-        <div class="card-body">
-            <h4 class="card-title">
+        <div class="card-body bg-light">
+            <h5 class="card-title">
                 <a href="{{ route('product.show', $product->id) }}">{{$product->name}}</a>
-            </h4>
-            <h5>{{$product->price}}€</h5>
-        <p class="card-text">{{$product->description}}</p>
-        </div>
-        <div class="card-footer">
-            <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+            </h5>
         </div>
     </div>
 </div>

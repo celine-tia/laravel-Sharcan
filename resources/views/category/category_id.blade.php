@@ -4,7 +4,11 @@
 <div class="card border-dark bg-light text-center ml-5" style="margin-top: 8%;">
     <div class="row no-gutters">
       <div class="col-md-6">
-        <img src="/storage/picture/category/{{$category->image}}" class="card-img" alt="...">
+        @if (!strpos($category->image, 'lorem'))
+            <a href="#"><img class="card-img-top" src="/storage/picture/category/{{$category->image}}" alt=""></a>
+        @else
+            <a href="#"><img class="card-img-top" src="{{$category->image}}" alt=""></a>
+        @endif
       </div>
       <div class="col-md-6">
         <div class="card-body align-middle">
