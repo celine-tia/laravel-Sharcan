@@ -12,7 +12,7 @@
                 <a href="{{ route('product.show', $product->id) }}">{{$product->name}}</a>
             </h4>
             <h5>{{$product->price}}€</h5>
-        <p class="card-text">{{$product->description}}</p>
+            <p class="card-text">{{$product->description}}</p>
         </div>
         <div class="card-footer">
             <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>

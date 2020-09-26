@@ -8,6 +8,8 @@
         <div class="card-body bg-light">
             <h5 class="card-title">
                 <a href="{{ route('product.show', $product->id) }}">{{$product->name}}</a>
+                <h5>{{$product->price}}€</h5>
+                <p class="card-text">{{$product->description}}</p>
             </h5>
         </div>
     </div>

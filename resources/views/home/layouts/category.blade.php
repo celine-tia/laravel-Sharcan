@@ -10,7 +10,7 @@
             <h5 class="card-title">
                 <a href="{{ route('category.show', $category->id) }}">{{$category->name}}</a>
             </h5>
-            <a href="#" class="btn btn-primary">Voir la liste des produits</a>
+            <a href="{{route('showProduct', ["name" => $category->name, "id" => $category->id])}}" class="btn btn-primary">Voir la liste des produits</a>
         </div>
     </div>
 </div>
