@@ -19,9 +19,11 @@ use App\Http\Controllers\MainController;
 Route::get('/', [MainController::class, 'index'])->name('home');
 Route::get('/{name}_{id}', [MainController::class, 'showProduct'])->name('showProduct');
 
+Route::get('/product/{id}/addtocart', [ProductController::class, 'addToCart'])->name('addToCart');
 Route::resource('product', ProductController::class);
 Route::resource('category', CategoryController::class);
 
+// Route::get('/product/addtocart', [MainController::class, 'addToCart'])->name('addToCart');
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return view('dashboard');

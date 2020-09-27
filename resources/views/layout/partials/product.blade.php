@@ -17,7 +17,7 @@
                 <h5 class="card-text">Categorie: {{$product->category_name}}</h5>
 
                 @if ($userRole === 1)
-                    <a href="{{ route('product.edit', $product->id) }}" class="btn btn-warning">Modifier</a>
+                    <a href="{{ route('product.edit', $product->id) }}" class="btn btn-warning my-2">Modifier</a>
                     {!! Form::model($product, array(
                         'route' => ['product.destroy', $product->id],
                         'method' => 'DELETE'
@@ -26,6 +26,7 @@
                     {!! Form::close() !!}
                 @endif
 
+                <a href="{{ route('addToCart', ["id" => $product->id]) }}" class="btn btn-success mt-3">Ajouter au panier</a>
             </div>
           </div>
         </div>
