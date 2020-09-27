@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class MainController extends Controller
 {
@@ -16,10 +17,8 @@ class MainController extends Controller
     public function index(Request $request){
 
         $categories = Category::all();
-
         return view('home/home', compact('categories'));
     }
-    // }
 
 
     public function showProduct(string $name, int $id){
@@ -63,7 +62,20 @@ class MainController extends Controller
     }
 
 
-    public function passCommand(){
+    public function passCommand($price, $quantity){
 
+        $user = Auth::user()->toArray();
+        $user_id = $user['id'];
+
+        DB::table('commands')
+        ->insert([
+            'user_id' => $user_id,
+            'price' => $price,
+            'quantity' => $quantity
+        ]);
+
+        session()->forget('cart');
+
+        return redirect()->route('home');
     }
 }

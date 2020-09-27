@@ -32,6 +32,7 @@
                     </tr>
                 </tfoot>
             </table>
+            <a href="{{route('command', ['price' => $totalPrice, 'quantity' => $totalQuantity])}}" class="btn btn-success text-center">Passer la commande</a>
         @else
             <p class="text-center">Vous n'avez aucun article dans votre panier !</p><br>
             <a href="{{route('product.index')}}" class="btn btn-primary text-center">Voir la liste des produits</a>
