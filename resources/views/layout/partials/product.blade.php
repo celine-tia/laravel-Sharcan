@@ -25,8 +25,28 @@
                     {!! Form::submit('Supprimer', ['class' => 'btn btn-danger']) !!}
                     {!! Form::close() !!}
                 @endif
+                @if (Auth::check())
 
-                <a href="{{ route('addToCart', ["id" => $product->id]) }}" class="btn btn-success mt-3">Ajouter au panier</a>
+                    {!! Form::open(array('url' => route('addToCart', $product->id), 'method' => 'POST' )) !!}
+                    {!! Form::label('quantity', 'Quantité', [
+                        'class' => 'mt-5'
+                    ]) !!}
+                    {!! Form::number('quantity', 1, [
+                        'class' => 'form-control',
+                        'min' => 1,
+                        'max' => $product->stock,
+                    ]) !!}
+                    {!! Form::submit('Ajouter au panier', [
+                        'class' => 'btn btn-success'
+                    ]) !!}
+
+                    {!! Form::close() !!}
+                    {{-- <a href="{{ route('addToCart', ["id" => $product->id, "quantity" => 'quantity']) }}" class="btn btn-success mt-3">Ajouter au panier</a> --}}
+
+                @else
+
+                    <p>Connecte-toi <a href="{{route('login')}}">ici</a> si tu veux ajouter un produit au panier</p>
+                @endif
             </div>
           </div>
         </div>

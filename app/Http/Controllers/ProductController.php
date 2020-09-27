@@ -81,7 +81,6 @@ class ProductController extends Controller
     public function show($id)
     {
 
-        var_dump(session()->all());
         $product = DB::table('products')
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->select('products.*', 'categories.name as category_name', 'categories.id as category_id')
@@ -179,14 +178,18 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function addToCart($id)
+    public function addToCart(Request $request, $id)
     {
         $product = Product::findOrFail($id);
+
+        $quantity = $request->get('quantity');
+
         session()->push('cart', [
             "id" => $product->id,
+            "image" => $product->image,
             "name" => $product->name,
             "price" => $product->price,
-            "stock" => $product->stock
+            "quantity" => $quantity
         ]);
 
         return redirect()->route('product.show', $id);

@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MainController extends Controller
 {
@@ -18,6 +19,7 @@ class MainController extends Controller
 
         return view('home/home', compact('categories'));
     }
+    // }
 
 
     public function showProduct(string $name, int $id){
@@ -40,5 +42,28 @@ class MainController extends Controller
         }
 
         return view('home/cat_prod', compact('products', 'category'));
+    }
+
+
+    public function cart()
+    {
+        $products = session()->get('cart');
+        $totalPrice = 0;
+        $totalQuantity = 0;
+
+        if($products){
+            foreach($products as $product)
+            {
+                $totalPrice = $totalPrice + $product['price'];
+                $totalQuantity = $totalQuantity + $product['quantity'];
+            }
+        }
+        return view('home/cart/cart', compact('products', 'totalPrice', 'totalQuantity'));
+
+    }
+
+
+    public function passCommand(){
+
     }
 }
