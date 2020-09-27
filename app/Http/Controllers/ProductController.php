@@ -197,6 +197,6 @@ class ProductController extends Controller
             "quantity" => $quantity
         ]);
 
-        return redirect()->route('product.show', $id);
+        return redirect()->route('product.index');
     }
 }
