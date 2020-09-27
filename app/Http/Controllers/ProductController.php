@@ -180,6 +180,11 @@ class ProductController extends Controller
      */
     public function addToCart(Request $request, $id)
     {
+
+        $request->validate([
+            'quantity' => 'min:1|required',
+        ]);
+
         $product = Product::findOrFail($id);
 
         $quantity = $request->get('quantity');

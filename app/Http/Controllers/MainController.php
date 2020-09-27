@@ -53,10 +53,15 @@ class MainController extends Controller
         if($products){
             foreach($products as $product)
             {
-                $totalPrice = $totalPrice + $product['price'];
-                $totalQuantity = $totalQuantity + $product['quantity'];
+                $totalQuantity += $product['quantity'];
+                $totalPrice += $product['price'] * $product['quantity'];
+
             }
         }
+
+
+
+
         return view('home/cart/cart', compact('products', 'totalPrice', 'totalQuantity'));
 
     }
@@ -73,6 +78,13 @@ class MainController extends Controller
             'price' => $price,
             'quantity' => $quantity
         ]);
+
+        $products = session()->get('cart');
+        foreach($products as $product){
+            $product_stock = Product::findOrFail($product['id']);
+            $product_stock->stock -= $product['quantity'];
+            $product_stock->save();
+        }
 
         session()->forget('cart');
 
