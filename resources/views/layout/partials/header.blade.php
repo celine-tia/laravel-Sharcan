@@ -1,7 +1,7 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="{{route('home')}}">E-coco, tu coco</a>
+            <a class="navbar-brand" href="{{route('home')}}">E-coco, tu coco ?</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -23,6 +23,9 @@
                         <a class="nav-link" href="{{route('login')}}">Login</a>
                     </li>
                     @else
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('cart')}}">Panier</a>
+                    </li>
                     <li class="nav-item text-center align-center">
                         <form method="POST" action="{{ route('logout') }}" class="align-middle h-100">
                             @csrf

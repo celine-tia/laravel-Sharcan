@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class MainController extends Controller
 {
@@ -12,7 +14,7 @@ class MainController extends Controller
     /**
      *
      */
-    public function index(){
+    public function index(Request $request){
 
         $categories = Category::all();
         return view('home/home', compact('categories'));
@@ -39,5 +41,53 @@ class MainController extends Controller
         }
 
         return view('home/cat_prod', compact('products', 'category'));
+    }
+
+
+    public function cart()
+    {
+        $products = session()->get('cart');
+        $totalPrice = 0;
+        $totalQuantity = 0;
+
+        if($products){
+            foreach($products as $product)
+            {
+                $totalQuantity += $product['quantity'];
+                $totalPrice += $product['price'] * $product['quantity'];
+
+            }
+        }
+
+
+
+
+        return view('home/cart/cart', compact('products', 'totalPrice', 'totalQuantity'));
+
+    }
+
+
+    public function passCommand($price, $quantity){
+
+        $user = Auth::user()->toArray();
+        $user_id = $user['id'];
+
+        DB::table('commands')
+        ->insert([
+            'user_id' => $user_id,
+            'price' => $price,
+            'quantity' => $quantity
+        ]);
+
+        $products = session()->get('cart');
+        foreach($products as $product){
+            $product_stock = Product::findOrFail($product['id']);
+            $product_stock->stock -= $product['quantity'];
+            $product_stock->save();
+        }
+
+        session()->forget('cart');
+
+        return redirect()->route('home');
     }
 }

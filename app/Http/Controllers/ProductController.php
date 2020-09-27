@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -79,7 +80,6 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        // $product = Product::find($id);
 
         $product = DB::table('products')
             ->join('categories', 'products.category_id', '=', 'categories.id')
@@ -169,5 +169,34 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->delete();
         return redirect()->route('product.index');
+    }
+
+
+    /**
+     * Add Product to cart
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function addToCart(Request $request, $id)
+    {
+
+        $request->validate([
+            'quantity' => 'min:1|required',
+        ]);
+
+        $product = Product::findOrFail($id);
+
+        $quantity = $request->get('quantity');
+
+        session()->push('cart', [
+            "id" => $product->id,
+            "image" => $product->image,
+            "name" => $product->name,
+            "price" => $product->price,
+            "quantity" => $quantity
+        ]);
+
+        return redirect()->route('product.show', $id);
     }
 }
