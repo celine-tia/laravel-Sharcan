@@ -22,6 +22,7 @@ Route::get('/{name}_{id}', [MainController::class, 'showProduct'])->name('showPr
 Route::get('/cart', [MainController::class, 'cart'])->name('cart');
 Route::get('/command/{price}_{quantity}', [MainController::class, 'passCommand'])->name('command');
 Route::post('/product/{id}/addtocart', [ProductController::class, 'addToCart'])->name('addToCart');
+Route::get('/removefromcart/{id}', [MainController::class, 'removeFromCart'])->name('removefromcart');
 
 
 Route::resource('product', ProductController::class);

@@ -8,7 +8,7 @@
     @endif
     <div class="row">
         @foreach ($products as $product)
-            @include('layout.partials.all_product', ['product' => $product])
+            @include('product.layouts.all_product', ['product' => $product])
         @endforeach
     </div>
 </div>

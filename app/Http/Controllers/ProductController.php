@@ -28,7 +28,7 @@ class ProductController extends Controller
             $userRole = 0;
         }
 
-        return view('products', compact('products', 'userRole'));
+        return view('product/products', compact('products', 'userRole'));
 
     }
 

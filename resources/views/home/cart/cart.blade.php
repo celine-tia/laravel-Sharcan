@@ -13,11 +13,12 @@
                         <th scope="col">Produits</th>
                         <th scope="col">Prix</th>
                         <th scope="col">Quantité</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
 
-                        @foreach ($products as $product)
+                        @foreach ($products as $key => $product)
                             @include('home.cart.layouts.cart_product')
                         @endforeach
 

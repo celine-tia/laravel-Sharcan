@@ -67,6 +67,18 @@ class MainController extends Controller
     }
 
 
+    public function removeFromCart($id){
+        $listOfProducts = session()->pull('cart');
+
+
+        unset($listOfProducts[$id]);
+
+
+        session()->put('cart', $listOfProducts);
+
+        return redirect()->route('cart');
+    }
+
     public function passCommand($price, $quantity){
 
         $user = Auth::user()->toArray();
